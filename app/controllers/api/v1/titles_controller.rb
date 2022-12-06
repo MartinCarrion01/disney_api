@@ -1,12 +1,41 @@
 class Api::V1::TitlesController < ApplicationController
-    before_action :set_title, only: %i[add_character]
+    before_action :set_title, only: %i[show update destroy add_character]
     
+    def index
+        if params[:order] != "DESC" && params[:order] != "ASC"
+            render(json: {message: "Parametro order incorrecto, debe ser ASC o DESC"}, status: :bad_request)
+            return
+        end
+        titles = Title.index(params[:name], params[:genre_id], params[:order])
+        render(json: {titles: titles}, status: :ok)
+    end
+
+    def show
+        render(json: {title: @title.get_detail}, status: :ok)
+    end
+
     def create
         title = Title.new(title_params)
         if title.save
             render(json: {title: title}, status: :created)
         else
             render(json: {message: title.errors}, status: :unprocessable_entity)
+        end
+    end
+
+    def update
+        if @title.update(title_params)
+            render(json: {title: @title}, status: :ok)
+        else
+            render(json: {message: @title.errors}, status: :unprocessable_entity)
+        end
+    end
+
+    def destroy
+        if @title.destroy
+            render(status: :not_found)
+        else
+            render(json: {message: @title.errors}, status: :bad_request)
         end
     end
 

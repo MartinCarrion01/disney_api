@@ -9,23 +9,17 @@ class Character < ApplicationRecord
     has_many :title_characters
     has_many :titles, through: :title_characters
 
-    scope :filter_by_name, ->(name) {where(name: name)}
+    scope :filter_by_name, ->(name) {where("name like ?", "#{name}%")}
     scope :filter_by_age, ->(age) {where(age: age)}
-    #scope :filter_by_age, ->(movie_id) {where(age: age)}
+    scope :filter_by_title, ->(title_id) {joins(:title_characters).where("title_id = ?", title_id)}
 
-    def self.list
-        characters = Character.select(:name, :id)
+    def self.index(name=nil, age=nil, title_id=nil)
+        characters = Character.where(nil)
+        characters = characters.filter_by_name(name) if name.present?
+        characters = characters.filter_by_age(age) if age.present?
+        characters = characters.filter_by_title(title_id) if title_id.present?
         characters = characters.map {|character| {id: character.id, name: character.name, image: character.get_image_url}}
         characters
-    end
-
-    def self.index(name=nil, age=nil)
-        characters = Character.where(nil)
-        characters = characters(name)
-    end
-
-    def self.search_by(name, age, title_id)
-        #results = 
     end
 
     def get_detail

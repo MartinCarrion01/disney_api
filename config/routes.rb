@@ -8,9 +8,6 @@ Rails.application.routes.draw do
       resources :users, only: %i[show create] do
       end
       resources :characters do
-        collection do
-          get :list
-        end
         member do
           put :set_image
           patch :set_image

@@ -3,7 +3,8 @@ class Api::V1::CharactersController < ApplicationController
     before_action :set_character, only: %i[set_image update destroy show]
 
     def index
-        @characters = Character.
+        @characters = Character.index(params[:name], params[:age], params[:title_id])
+        render(json: {characters: @characters}, status: :ok)
     end
 
     def show
@@ -33,11 +34,6 @@ class Api::V1::CharactersController < ApplicationController
         else
             render(json: {message: @character.errors}, status: :bad_request)
         end
-    end
-
-    def list
-        @characters = Character.list
-        render(json: {characters: @characters}, status: :ok)
     end
 
     def set_image
