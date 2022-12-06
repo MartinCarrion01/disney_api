@@ -7,6 +7,15 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: %i[show create] do
       end
+      resources :characters do
+        collection do
+          get :list
+        end
+        member do
+          put :set_image
+          patch :set_image
+        end
+      end
       resources :auth, only: [] do
         collection do
           post :login
@@ -14,6 +23,12 @@ Rails.application.routes.draw do
           patch :change_password
         end
       end
+      resources :titles do
+        member do
+          post :add_character
+        end
+      end
+      resources :genres
     end
   end
 end
