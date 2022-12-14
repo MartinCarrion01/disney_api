@@ -67,6 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_02_180150) do
     t.string "name"
     t.integer "score"
     t.integer "genre_id"
+    t.integer "title_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_titles_on_genre_id"

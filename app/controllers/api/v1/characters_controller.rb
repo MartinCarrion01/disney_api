@@ -1,10 +1,10 @@
 class Api::V1::CharactersController < ApplicationController
     
-    before_action :set_character, only: %i[set_image update destroy show]
+    before_action :set_character, only: %i[show update destroy set_image]
 
     def index
-        @characters = Character.index(params[:name], params[:age], params[:title_id])
-        render(json: {characters: @characters}, status: :ok)
+        characters = Character.index(params[:name], params[:age], params[:title_id])
+        render(json: {characters: characters}, status: :ok)
     end
 
     def show
@@ -12,11 +12,11 @@ class Api::V1::CharactersController < ApplicationController
     end
 
     def create
-        @character = Character.new(character_params)
-        if @character.save
-            render(json: {character: @character}, status: :created)
+        character = Character.new(character_params)
+        if character.save
+            render(json: {character: character}, status: :created)
         else
-            render(json: {message: @character.errors}, status: :unprocessable_entity)
+            render(json: {message: character.errors}, status: :unprocessable_entity)
         end
     end
 

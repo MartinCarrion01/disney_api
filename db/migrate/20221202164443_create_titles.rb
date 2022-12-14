@@ -4,6 +4,7 @@ class CreateTitles < ActiveRecord::Migration[7.0]
       t.string :name
       t.integer :score
       t.belongs_to :genre
+      t.integer :title_type
       
       t.timestamps
     end

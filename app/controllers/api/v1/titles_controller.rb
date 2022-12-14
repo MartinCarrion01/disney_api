@@ -1,4 +1,5 @@
 class Api::V1::TitlesController < ApplicationController
+    
     before_action :set_title, only: %i[show update destroy add_character]
     
     def index
@@ -33,7 +34,7 @@ class Api::V1::TitlesController < ApplicationController
 
     def destroy
         if @title.destroy
-            render(status: :not_found)
+            render(status: :no_content)
         else
             render(json: {message: @title.errors}, status: :bad_request)
         end
@@ -53,7 +54,7 @@ class Api::V1::TitlesController < ApplicationController
     private
     
     def title_params
-        params.require(:title).permit(:name, :score, :genre_id)
+        params.require(:title).permit(:name, :score, :title_type,:genre_id)
     end
 
     def set_title

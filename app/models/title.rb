@@ -1,6 +1,8 @@
 class Title < ApplicationRecord
     include Attachable
 
+    enum title_type: %i(movie series)
+
     validates :name, presence: true
     validates :score, numericality: {in: 0..5}
     
